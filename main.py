@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 from board import *
-
+from config import *
 
 class GameOfLife:
 
@@ -22,6 +22,7 @@ class GameOfLife:
         self._running = True
         self.clock = pygame.time.Clock()
         self.paused = True
+        self.fps = STARTING_FPS
     
 
     def on_event(self, event):
@@ -47,7 +48,7 @@ class GameOfLife:
         """Runs as the main application loop.
         """
         if not self.paused:
-            self.clock.tick(5)
+            self.clock.tick(self.fps)
             self.board.on_loop()
 
 

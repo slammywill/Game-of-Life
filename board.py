@@ -1,10 +1,11 @@
 import pygame
 import math
+from config import *
 
 class Board:
 
 
-    def __init__(self, screen_size, scale = 20):
+    def __init__(self, screen_size, scale = BOARD_SCALE):
         """Initializes the board that the automata will run on.
         """
         self.scale = scale
@@ -40,11 +41,18 @@ class Board:
         for row_idx in range(self.rows):
             for col_idx in range(self.columns):
                 
-                # Finds the number of alive neighbours of a cell.
+                # Finds the number of alive neighbours of a cell. This depends on whether the board wraps or not.
                 alive_cells = 0
-                for neighbour in self.neighbours:
-                    if self.state[(row_idx + neighbour[0]) % self.rows][(col_idx + neighbour[1]) % self.columns] == 1:
-                        alive_cells += 1
+                match BOARD_WRAP:
+                    case True:
+                        for neighbour in self.neighbours:
+                            if self.state[(row_idx + neighbour[0]) % self.rows][(col_idx + neighbour[1]) % self.columns] == 1:
+                                alive_cells += 1
+                    case False:
+                        for neighbour in self.neighbours:
+                            if row_idx + neighbour[0] in range(self.rows) and col_idx + neighbour[1] in range(self.columns):
+                                if self.state[row_idx + neighbour[0]][col_idx + neighbour[1]] == 1:
+                                    alive_cells += 1
                 
                 # Rules for determining whether a cell in the next state is alive or not.
                 if self.state[row_idx][col_idx] == 1:
