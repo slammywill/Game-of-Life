@@ -9,7 +9,9 @@ class GameOfLife:
         """The main class constructor that starts the application.
         """
         self._running = False
-        self.size = self.width, self.height = 1000, 1000
+        self.num_rows = 160
+        self.num_cols = 90
+        self.size = self.width, self.height = BOARD_SCALE * self.num_rows, BOARD_SCALE * self.num_cols
     
 
     def on_init(self):
@@ -18,7 +20,7 @@ class GameOfLife:
         pygame.init()
         pygame.display.set_caption("Game of Life")
         self._display_surf = pygame.display.set_mode(self.size, pygame.HWSURFACE | pygame.DOUBLEBUF)
-        self.board = Board(self.size)
+        self.board = Board(self.num_rows, self.num_cols)
         self._running = True
         self.clock = pygame.time.Clock()
         self.paused = True

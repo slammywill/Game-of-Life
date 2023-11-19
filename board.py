@@ -5,12 +5,11 @@ from config import *
 class Board:
 
 
-    def __init__(self, screen_size, scale = BOARD_SCALE):
+    def __init__(self, rows, cols):
         """Initializes the board that the automata will run on.
         """
-        self.scale = scale
-        self.columns = int(screen_size[0] / scale)
-        self.rows = int(screen_size[1] / scale)
+        self.columns = cols
+        self.rows = rows
         self.state = [[0 for _ in range(self.columns)] for _ in range(self.rows)] 
         self.next_state = [[0 for _ in range(self.columns)] for _ in range(self.rows)]
         
@@ -30,7 +29,7 @@ class Board:
         for row_idx in range(self.rows):
             for col_idx in range(self.columns):
                 alive = self.state[row_idx][col_idx]
-                rect = [self.scale * row_idx, self.scale * col_idx, self.scale, self.scale]
+                rect = [BOARD_SCALE * row_idx, BOARD_SCALE * col_idx, BOARD_SCALE, BOARD_SCALE]
                 pygame.draw.rect(display_surf, color = "white" if alive else "black", rect=rect)
                 pygame.draw.rect(display_surf, color = (50, 50, 50, 1), rect=rect, width=1)
 
@@ -78,8 +77,8 @@ class Board:
             mouse_pos (Tuple) The x and y co-ordinates of the mouse position.
             """
         x, y = mouse_pos
-        row = math.floor(x / self.scale)
-        column = math.floor(y / self.scale)
+        row = math.floor(x / BOARD_SCALE)
+        column = math.floor(y / BOARD_SCALE)
         self.state[row][column] = not self.state[row][column]
 
 
