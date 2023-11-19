@@ -14,4 +14,4 @@ Sam Willems
 Nov 19, 2023
 
 ### Current Version
-1.0
+1.0.1
