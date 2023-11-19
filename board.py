@@ -1,4 +1,5 @@
 import pygame
+import math
 
 class Board:
 
@@ -16,13 +17,6 @@ class Board:
         self.neighbours = [[-1, -1], [-1, 0], [-1, 1],
                            [0 , -1],         [0 , 1],
                            [1 , -1], [1 , 0], [1 , 1]]
-        
-        # Glider
-        self.state[0][1] = 1
-        self.state[1][2] = 1
-        self.state[2][0] = 1
-        self.state[2][1] = 1
-        self.state[2][2] = 1
 
 
     def on_draw(self, display_surf):
@@ -67,3 +61,17 @@ class Board:
         # Swaps the state for the new state.
         self.state = self.next_state.copy()
         self.next_state = [[0 for _ in range(self.columns)] for _ in range(self.rows)]
+
+
+    def change_state_on_click(self, mouse_pos):
+        """Changes the state of the cell that the user clicks on when the simulation is paused.
+        
+        Args:
+            mouse_pos (Tuple) The x and y co-ordinates of the mouse position.
+            """
+        x, y = mouse_pos
+        row = math.floor(x / self.scale)
+        column = math.floor(y / self.scale)
+        self.state[row][column] = not self.state[row][column]
+
+

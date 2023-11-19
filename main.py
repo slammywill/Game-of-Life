@@ -21,6 +21,7 @@ class GameOfLife:
         self.board = Board(self.size)
         self._running = True
         self.clock = pygame.time.Clock()
+        self.paused = True
     
 
     def on_event(self, event):
@@ -31,13 +32,23 @@ class GameOfLife:
         """
         if event.type == pygame.QUIT:
             self._running = False
+        
+        elif event.type == KEYDOWN:
+            if event.key == K_SPACE:
+                self.paused = not self.paused
+        
+        elif event.type == MOUSEBUTTONDOWN:
+            left, middle, right = pygame.mouse.get_pressed()
+            if left:
+                self.board.change_state_on_click(pygame.mouse.get_pos())
 
     
     def on_loop(self):
         """Runs as the main application loop.
         """
-        self.clock.tick(20)
-        self.board.on_loop()
+        if not self.paused:
+            self.clock.tick(5)
+            self.board.on_loop()
 
 
     def on_render(self):
@@ -45,6 +56,12 @@ class GameOfLife:
         """
         self._display_surf.fill("black")
         self.board.on_draw(self._display_surf)
+        
+        # Draws the pause icon.
+        if self.paused:
+            pygame.draw.rect(self._display_surf, color="gray", rect=[10, 10, 15, 50])
+            pygame.draw.rect(self._display_surf, color="gray", rect=[40, 10, 15, 50])
+
         pygame.display.flip()
 
 
